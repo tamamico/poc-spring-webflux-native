@@ -1,0 +1,53 @@
+name: Create release branch
+
+on:
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./code
+
+jobs:
+  create-release-branch:
+    name: Create release branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set-up GraalVM
+        uses: actions/setup-java@v4.5.0
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          cache: 'maven'
+      - name: Set-up Git user
+        uses: fregante/setup-git-user@v2
+      - name: Build release branch name
+        id: release-branch
+        run: |
+          getVersion() {
+            echo $(./mvnw -B build-helper:parse-version help:evaluate \
+            -Dexpression=parsedVersion.$1 -DformatBuildNumber=RC%02d -q -DforceStdout)
+          }
+          MAJOR=$(getVersion majorVersion)
+          MINOR=$(getVersion minorVersion)
+          INCREMENTAL=$(getVersion incrementalVersion)
+          echo "name=release/$MAJOR.$MINOR.$INCREMENTAL" >> "$GITHUB_OUTPUT"
+      - name: Create release branch
+        run: |
+          ./mvnw -B build-helper:parse-version release:branch \
+          -DbranchName=${{ steps.release-branch.outputs.name }} \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.nextMinorVersion}.0-SNAPSHOT
+      - name: Switch to release branch
+        run: git checkout ${{ steps.release-branch.outputs.name }}
+      - name: Prepare release candidate
+        uses: ./.github/actions/release-candidate
+      - name: Commit & Push changes
+        shell: bash
+        run: |
+          git commit -am "Bumped release candidate version"
+          git push --set-upstream origin ${{ steps.release-branch.outputs.name }}

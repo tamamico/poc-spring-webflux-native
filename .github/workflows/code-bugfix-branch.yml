@@ -1,0 +1,53 @@
+name: Create bugfix branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      ticket:
+        type: string
+        description: Jira bug ticket
+        required: true
+      version:
+        type: string
+        description: Version affected by the bug
+        required: true
+
+defaults:
+  run:
+    working-directory: ./code
+
+jobs:
+  create-branch:
+    name: Create bugfix branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: v${{ inputs.version }}
+          fetch-depth: 0
+          fetch-tags: 'true'
+      - name: Set-up GraalVM
+        uses: actions/setup-java@v4.5.0
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          cache: 'maven'
+      - name: Set-up Git user
+        uses: fregante/setup-git-user@v2
+      - name: Set-up Git remote upstream creation
+        run: git config --global --add --bool push.autoSetupRemote true
+      - name: Create bugfix branch
+        run: git checkout -b bugfix/${{ inputs.ticket }} v${{ inputs.version }}
+      - name: Bump incremental version
+        run: |
+          ./mvnw -B build-helper:parse-version release:update-versions versions:commit \
+          -DdevelopmentVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion}-SNAPSHOT
+      - name: Update SCM tag in pom.xml
+        run: sed -i 's#v${{ inputs.version }}#bugfix/${{ inputs.ticket }}#' pom.xml
+      - name: Commit & Push changes
+        run: |
+          git commit -am "Bumped incremental version"
+          git push --set-upstream origin bugfix/${{ inputs.ticket }}

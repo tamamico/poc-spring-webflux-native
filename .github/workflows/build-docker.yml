@@ -1,0 +1,65 @@
+name: Build Docker image
+
+on:
+  workflow_call:
+
+permissions:
+  pull-requests: read
+  contents: read
+  security-events: write
+  packages: write
+
+defaults:
+  run:
+    working-directory: ./code
+
+jobs:
+  build:
+    name: Build Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set-up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Log in to the Container registry
+        uses: docker/login-action@7ca345011ac4304463197fac0e56eab1bc7e6af0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build Docker image
+        run: ./mvnw -B spring-boot:build-image -Pnative
+      - name: Get Maven artifact version
+        id: get-artifact-version
+        run: echo value=$(./mvnw -B help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_OUTPUT
+      - name: Run Snyk analysis in Docker image
+        uses: snyk/actions/docker@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ghcr.io/tamamico/poc-webflux-native:${{ steps.get-artifact-version.outputs.value }}
+          args: --sarif-file-output=docker.sarif
+      - name: Replace security-severity null for license-related findings
+        run: |
+          sed -i 's/"security-severity": "null"/"security-severity": "0"/g' ../docker.sarif
+      - name: Upload Docker image analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        continue-on-error: true
+        with:
+          sarif_file: docker.sarif
+          category: docker
+      - name: Deploy Docker image
+        run: docker push ghcr.io/tamamico/poc-scs-native:${{ steps.get-artifact-version.outputs.value }}

@@ -1,0 +1,40 @@
+name: Build and prepare release candidate
+
+on:
+  push:
+    branches:
+      - 'release/**'
+      - 'bugfix/**'
+    paths:
+      - 'code/**'
+      - '.github/workflows/build-code.yml'
+      - '.github/workflows/release-code.yml'
+
+permissions:
+  contents: write
+  pull-requests: read
+  security-events: write
+  packages: write
+
+jobs:
+  build-source-code:
+    name: Build source code
+    uses: ./.github/workflows/build-code.yml
+    secrets: inherit
+  prepare-release-candidate:
+    needs: build-source-code
+    name: Prepare release candidate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+      - name: Generate release candidate
+        uses: ./.github/actions/release-candidate
+      - name: Commit & Push changes
+        shell: bash
+        run: |
+          git commit -am "Bumped release candidate version"
+          git push
