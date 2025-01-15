@@ -27,12 +27,7 @@ jobs:
         with:
           java-version: '21'
           distribution: 'graalvm'
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          cache: 'maven'
       - name: Log in to the Container registry
         uses: docker/login-action@7ca345011ac4304463197fac0e56eab1bc7e6af0
         with:
@@ -50,7 +45,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ghcr.io/tamamico/poc-webflux-native:${{ steps.get-artifact-version.outputs.value }}
+          image: ghcr.io/tamamico/poc-spring-webflux-native:${{ steps.get-artifact-version.outputs.value }}
           args: --sarif-file-output=docker.sarif
       - name: Replace security-severity null for license-related findings
         run: |
@@ -62,4 +57,4 @@ jobs:
           sarif_file: docker.sarif
           category: docker
       - name: Deploy Docker image
-        run: docker push ghcr.io/tamamico/poc-scs-native:${{ steps.get-artifact-version.outputs.value }}
+        run: docker push ghcr.io/tamamico/poc-spring-webflux-native:${{ steps.get-artifact-version.outputs.value }}
