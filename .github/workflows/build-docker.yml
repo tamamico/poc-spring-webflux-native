@@ -45,7 +45,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ghcr.io/tamamico/poc-spring-webflux-native:${{ steps.get-artifact-version.outputs.value }}
+          image: ghcr.io/tamamico/poc-webflux-native:${{ steps.get-artifact-version.outputs.value }}
           args: --sarif-file-output=docker.sarif
       - name: Replace security-severity null for license-related findings
         run: |
@@ -57,4 +57,4 @@ jobs:
           sarif_file: docker.sarif
           category: docker
       - name: Deploy Docker image
-        run: docker push ghcr.io/tamamico/poc-spring-webflux-native:${{ steps.get-artifact-version.outputs.value }}
+        run: docker push ghcr.io/tamamico/poc-webflux-native:${{ steps.get-artifact-version.outputs.value }}
