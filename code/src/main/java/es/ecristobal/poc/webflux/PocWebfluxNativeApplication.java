@@ -3,11 +3,15 @@ package es.ecristobal.poc.webflux;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import static org.springframework.boot.SpringApplication.run;
+import static reactor.core.publisher.Hooks.enableAutomaticContextPropagation;
+
 @SpringBootApplication
 public class PocWebfluxNativeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PocWebfluxNativeApplication.class, args);
+        enableAutomaticContextPropagation();
+        run(PocWebfluxNativeApplication.class, args);
     }
 
 }
