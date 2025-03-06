@@ -45,7 +45,7 @@
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-        <rewrite-maven-plugin.version>6.2.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>6.2.2</rewrite-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -173,6 +173,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
                     <apiToken>${env.SNYK_TOKEN}</apiToken>
                     <args>
                         <arg>--all-projects</arg>
@@ -195,6 +196,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
                     <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
                 </configuration>
             </plugin>
