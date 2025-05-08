@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -16,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 class SpringSecurityConfiguration {
 
     @Bean
-    MapReactiveUserDetailsService userDetailsService() {
+    ReactiveUserDetailsService userDetailsService() {
         @SuppressWarnings({ "deprecation", "java:S1874", "java:S6437" })
         UserDetails user = User.withDefaultPasswordEncoder()
                                .username("user")
@@ -30,7 +31,7 @@ class SpringSecurityConfiguration {
     public SecurityWebFilterChain springWebFilterChain(final ServerHttpSecurity http) {
         //@formatter:off
         http.authorizeExchange(authorize -> authorize
-                    .pathMatchers("/actuator/health/**").permitAll()
+                    .pathMatchers("/actuator/**").permitAll()
                     .anyExchange().authenticated()
             )
             .httpBasic(withDefaults())
