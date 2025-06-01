@@ -37,8 +37,6 @@
         <!-- Maven settings -->
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Dependency versions -->
-        <springfox.version>3.0.0</springfox.version>
         <!-- Plugin versions -->
         <sonar-maven-plugin.version>5.1.0.4751</sonar-maven-plugin.version>
         <snyk-maven-plugin.version>2.3.0</snyk-maven-plugin.version>
@@ -86,6 +84,11 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-exporter-otlp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-logback-appender-1.0</artifactId>
+            <version>2.7.0-alpha</version>
         </dependency>
         <!-- Test dependencies -->
         <dependency>
