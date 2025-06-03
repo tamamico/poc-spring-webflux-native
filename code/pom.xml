@@ -46,6 +46,18 @@
         <rewrite-maven-plugin.version>6.10.0</rewrite-maven-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-bom</artifactId>
+                <version>2.16.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -80,6 +92,14 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-tracing-bridge-otel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-java21</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>io.opentelemetry</groupId>
@@ -160,15 +180,9 @@
                     <createdDate>now</createdDate>
                     <imageName>ghcr.io/tamamico/${project.artifactId}:${project.version}</imageName>
                     <image>
-                        <buildpacks>
-                            <buildpack>docker.io/paketobuildpacks/java</buildpack>
-                            <buildpack>docker.io/paketobuildpacks/opentelemetry</buildpack>
-                        </buildpacks>
                         <env>
                             <BP_OCI_SOURCE>https://github.com/tamamico/poc-spring-webflux-native</BP_OCI_SOURCE>
                             <BP_OCI_DESCRIPTION>PoC to use Spring WebFlux with GraalVM</BP_OCI_DESCRIPTION>
-                            <BP_JVM_CDS_ENABLED>true</BP_JVM_CDS_ENABLED>
-                            <BP_OPENTELEMETRY_ENABLED>true</BP_OPENTELEMETRY_ENABLED>
                         </env>
                     </image>
                 </configuration>
