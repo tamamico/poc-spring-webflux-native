@@ -160,10 +160,15 @@
                     <createdDate>now</createdDate>
                     <imageName>ghcr.io/tamamico/${project.artifactId}:${project.version}</imageName>
                     <image>
+                        <buildpacks>
+                            <buildpack>docker.io/paketobuildpacks/java</buildpack>
+                            <buildpack>docker.io/paketobuildpacks/opentelemetry</buildpack>
+                        </buildpacks>
                         <env>
                             <BP_OCI_SOURCE>https://github.com/tamamico/poc-spring-webflux-native</BP_OCI_SOURCE>
                             <BP_OCI_DESCRIPTION>PoC to use Spring WebFlux with GraalVM</BP_OCI_DESCRIPTION>
                             <BP_JVM_CDS_ENABLED>true</BP_JVM_CDS_ENABLED>
+                            <BP_OPENTELEMETRY_ENABLED>true</BP_OPENTELEMETRY_ENABLED>
                         </env>
                     </image>
                 </configuration>
