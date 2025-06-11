@@ -86,12 +86,12 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core-micrometer</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-jakarta9</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-jakarta9</artifactId>
+            <artifactId>context-propagation</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
