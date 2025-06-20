@@ -1,5 +1,6 @@
 package es.ecristobal.poc.webflux;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ class HelloWorldController {
 
     private static final String GREETING_TEMPLATE = "Hello, %s!";
 
+    @WithSpan
     @GetMapping("/greet/{name}")
     public Mono<String> greet(final @PathVariable String name) {
         log.info("Greeting {}", name);
