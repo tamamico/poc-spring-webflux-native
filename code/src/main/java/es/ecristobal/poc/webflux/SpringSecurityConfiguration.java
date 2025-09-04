@@ -20,7 +20,7 @@ class SpringSecurityConfiguration {
     ReactiveUserDetailsService userDetailsService() {
         @SuppressWarnings({ "deprecation", "java:S1874", "java:S6437" })
         UserDetails user = User.withDefaultPasswordEncoder()
-                               .username("user")
+                               .username("pirindolo")
                                .password("password")
                                .roles("USER")
                                .build();
