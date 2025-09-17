@@ -35,17 +35,17 @@
 
     <properties>
         <!-- Maven settings -->
-        <java.version>21</java.version>
+        <java.version>24</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
-        <opentelemetry-instrumentation-bom.version>2.19.0</opentelemetry-instrumentation-bom.version>
+        <opentelemetry-instrumentation-bom.version>2.20.0</opentelemetry-instrumentation-bom.version>
         <!-- Plugin versions -->
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
         <snyk-maven-plugin.version>2.3.0</snyk-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-        <rewrite-maven-plugin.version>6.17.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>6.18.0</rewrite-maven-plugin.version>
     </properties>
 
     <dependencyManagement>

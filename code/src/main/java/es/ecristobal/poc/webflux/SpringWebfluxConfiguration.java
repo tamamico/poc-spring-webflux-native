@@ -24,8 +24,7 @@ class SpringWebfluxConfiguration {
 
     @Bean
     WebFilter webFilter() {
-        FIELDS.forEach(field -> getInstance().registerThreadLocalAccessor(field,
-                                                                          () -> MDC.get(field),
+        FIELDS.forEach(field -> getInstance().registerThreadLocalAccessor(field, () -> MDC.get(field),
                                                                           username -> MDC.put(field, username),
                                                                           () -> MDC.remove(field)));
         return (exchange, chain) -> exchange.getPrincipal()
