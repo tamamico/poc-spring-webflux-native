@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.4</version>
+        <version>4.0.5</version>
         <relativePath/>
     </parent>
 
@@ -38,14 +38,14 @@
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
-        <opentelemetry-instrumentation-bom.version>2.26.0</opentelemetry-instrumentation-bom.version>
+        <opentelemetry-instrumentation-bom.version>2.26.1</opentelemetry-instrumentation-bom.version>
         <!-- Plugin versions -->
         <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
         <snyk-maven-plugin.version>2.3.0</snyk-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
-        <rewrite-maven-plugin.version>6.34.0</rewrite-maven-plugin.version>
+        <rewrite-maven-plugin.version>6.35.0</rewrite-maven-plugin.version>
     </properties>
 
     <dependencyManagement>
