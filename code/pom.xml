@@ -38,7 +38,7 @@
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
-        <opentelemetry-instrumentation-bom.version>2.26.1</opentelemetry-instrumentation-bom.version>
+        <opentelemetry-instrumentation-bom.version>2.27.0</opentelemetry-instrumentation-bom.version>
         <!-- Plugin versions -->
         <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
         <snyk-maven-plugin.version>2.3.0</snyk-maven-plugin.version>
